@@ -22,3 +22,10 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+#1 creo un S3
+#2 creo un RDS
+#3 creo un EC2
+#4 creo un de comparacion
+#5 depliegue

@@ -7,12 +7,20 @@
 
 <p>
   <strong>Image a:</strong>
-  <%= @report.image_a %>
+  <% if @report.image_a.attached? %>
+    <img src="<%= url_for(@report.image_a) %>">
+    <%= image_tag url_for(@report.image_a) %>
+    <%= rails_blob_path(@report.image_a, disposition: "attachment") %>
+    <%= Rails.application.routes.url_helpers.rails_blob_path(@report.image_a, only_path: true) %>
+  <% end %>
 </p>
 
 <p>
   <strong>Image b:</strong>
-  <%= @report.image_b %>
+  <% if @report.image_b.attached? %>
+    <img src="<%= url_for(@report.image_b) %>">
+    <%= url_for(@report.image_b) %>
+  <% end %>
 </p>
 
 <%= link_to 'Edit', edit_report_path(@report) %> |
