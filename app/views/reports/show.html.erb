@@ -1,27 +1,64 @@
-<p id="notice"><%= notice %></p>
+<div class="panel">
+  <div class="panel-body container-fluid">
 
-<p>
-  <strong>Name:</strong>
-  <%= @report.name %>
-</p>
+    <!-- Card -->
+    <div class="card-group">
+      <div class="card card-block p-0">
+        <div class="counter counter-md vertical-align bg-blue-700 h-300">
 
-<p>
-  <strong>Image a:</strong>
-  <% if @report.image_a.attached? %>
-    <img src="<%= url_for(@report.image_a) %>">
-    <%= image_tag url_for(@report.image_a) %>
-    <%= rails_blob_path(@report.image_a, disposition: "attachment") %>
-    <%= Rails.application.routes.url_helpers.rails_blob_path(@report.image_a, only_path: true) %>
-  <% end %>
-</p>
+            <img class="cover-image"src="<%= @report.image_a.attached? ? url_for(@report.image_a) : '/report/images/single/1.jpg' %>" style='height:20vw;width:35vw;margin-bottom:1px;'>
+          
+        </div>
 
-<p>
-  <strong>Image b:</strong>
-  <% if @report.image_b.attached? %>
-    <img src="<%= url_for(@report.image_b) %>">
-    <%= url_for(@report.image_b) %>
-  <% end %>
-</p>
+        
+        <% @text_detections_a.text_detections.each do |text| %>
+          <%= text.detected_text %>
+        <% end %>                                             
+        
+        <hr>
 
-<%= link_to 'Edit', edit_report_path(@report) %> |
-<%= link_to 'Back', reports_path %>
+        <% @detect_labels_a.labels.each do |label| %>
+          <%= label.name %> - <%= label.confidence %><br>
+        <% end %>
+
+        <hr>
+
+        <% @detect_moderation_labels_a.moderation_labels.each do |moderation| %>
+          <%= moderation.parent_name %> - <%= moderation.name %> - <%= moderation.confidence %><br>
+        <% end %>
+
+      </div>
+      <div class="card card-block p-0">
+        <div class="counter counter-md vertical-align bg-red-700 h-300">          
+            
+          <img class="cover-image" src="<%= @report.image_b.attached? ? url_for(@report.image_b) : '/report/images/single/1.jpg' %>" style='height:20vw;width:35vw;margin-bottom:1px;'>
+
+        </div>
+
+          <% @text_detections_b.text_detections.each do |text| %>
+            <%= text.detected_text %>
+          <% end %>
+          
+          <hr>
+
+          <% @detect_labels_b.labels.each do |label| %>
+            <%= label.name %> - <%= label.confidence %><br>
+          <% end %>
+
+          <hr>
+
+          <% @detect_moderation_labels_b.moderation_labels.each do |moderation| %>
+            <%= moderation.parent_name %> - <%= moderation.name %> - <%= moderation.confidence %><br>
+          <% end %>
+
+      </div>
+    </div>
+    <!-- End Card -->
+
+  </div>
+</div>
+
+<center>
+  <%= link_to 'Edit', edit_report_path(@report), class: 'btn btn-primary my-2 animsition-link' %>
+  <%= link_to 'Back', reports_path, class: 'btn btn-primary my-2 animsition-link' %>
+</center>

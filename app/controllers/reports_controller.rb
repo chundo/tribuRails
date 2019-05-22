@@ -1,5 +1,6 @@
 class ReportsController < ApplicationController
   before_action :set_report, only: [:show, :edit, :update, :destroy]
+  require 'aws-sdk'
 
   # GET /reports
   # GET /reports.json
@@ -10,6 +11,76 @@ class ReportsController < ApplicationController
   # GET /reports/1
   # GET /reports/1.json
   def show
+    Aws.config.update({
+      credentials: Aws::Credentials.new(ENV['AWS_ACCESS_KEY_ID'], ENV['AWS_SECRET_ACCESS_KEY'])
+    })
+    
+    client = Aws::Rekognition::Client.new(
+      region: ENV['AWS_REGION'],
+      access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
+    )
+    
+    
+
+    @text_detections_a = client.detect_text({
+      image: { # required
+        s3_object: {
+          bucket: ENV['AWS_BUCKET'],
+          name: @report.image_a.key          
+        }
+      }      
+    })
+
+    @text_detections_b = client.detect_text({
+      image: { # required
+        s3_object: {
+          bucket: ENV['AWS_BUCKET'],
+          name: @report.image_b.key          
+        }
+      }      
+    })
+
+    @detect_labels_a = client.detect_labels({
+      image: { # required
+        s3_object: {
+          bucket: ENV['AWS_BUCKET'],
+          name: @report.image_a.key          
+        }
+      }   
+    })
+
+    @detect_labels_b = client.detect_labels({
+      image: { # required
+        s3_object: {
+          bucket: ENV['AWS_BUCKET'],
+          name: @report.image_b.key          
+        }
+      }     
+    })
+
+
+    @detect_moderation_labels_a = client.detect_moderation_labels({
+      image: { # required
+        s3_object: {
+          bucket: ENV['AWS_BUCKET'],
+          name: @report.image_a.key
+        },
+      },
+      min_confidence: 1.0,
+    })
+
+    @detect_moderation_labels_b = client.detect_moderation_labels({
+      image: { # required
+        s3_object: {
+          bucket: ENV['AWS_BUCKET'],
+          name: @report.image_b.key
+        },
+      },
+      min_confidence: 1.0,
+    })
+    
+    
   end
 
   # GET /reports/new

@@ -18,9 +18,9 @@
         <td><%= report.name %></td>
         <td><%= report.image_a %></td>
         <td><%= report.image_b %></td>
-        <td><%= link_to 'Show', report %></td>
-        <td><%= link_to 'Edit', edit_report_path(report) %></td>
-        <td><%= link_to 'Destroy', report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', report, class: 'btn btn-primary  animsition-link' %></td>
+        <td><%= link_to 'Edit', edit_report_path(report), class: 'btn btn-primary my-2 animsition-link' %></td>
+        <td><%= link_to 'Destroy', report, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary my-2 animsition-link' %></td>
       </tr>
     <% end %>
   </tbody>
